@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>5/J Sınıf Portalı - Tam Sürüm</title>
+<title>5/J Sınıf Portalı - Full Admin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   html { scroll-behavior: smooth; }
@@ -20,8 +20,8 @@
   ul { list-style: none; padding: 0; }
   li { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .gonderi-item { background: rgba(255,255,255,0.08); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid #00c6ff; }
-  input, textarea { width: calc(100% - 24px); padding: 12px; border-radius: 10px; border: none; margin-bottom: 10px; background: rgba(0,0,0,0.2); color: white; }
-  .admin-section { border: 2px solid #2ecc71; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
+  input, textarea { width: calc(100% - 24px); padding: 12px; border-radius: 10px; border: none; margin-bottom: 10px; background: rgba(0,0,0,0.2); color: white; outline: none; }
+  .admin-section { border: 2px solid #2ecc71; padding: 15px; border-radius: 15px; margin-bottom: 20px; background: rgba(46, 204, 113, 0.05); }
 </style>
 </head>
 <body>
@@ -32,7 +32,6 @@
   <div class="card" id="timer-card">
     <div id="saat">00:00:00</div>
     <div id="durum">Yükleniyor...</div>
-    <div id="sayac" style="text-align:center; color:#7CFF7C; margin-top:5px;"></div>
   </div>
 
   <div id="home" class="card">
@@ -45,41 +44,43 @@
     <button onclick="ac('giris-ekrani')" style="background: #e74c3c;">🔐 Admin Paneli</button>
   </div>
 
+  <div id="odev" class="card hidden">
+    <h3>📓 Güncel Ödevler</h3>
+    <div id="odevListesi">
+      <ul>
+        <li>Henüz ödev eklenmemiş.</li>
+      </ul>
+    </div>
+    <button class="back" onclick="geri()">⬅ Geri Dön</button>
+  </div>
+
   <div id="ders" class="card hidden">
-    <h3>📅 Haftalık Ders Programı</h3>
+    <h3>📅 Haftalık Program</h3>
     <ul>
       <li><b>Pazartesi:</b> Türkçe(2), İngilizce(2), Sosyal, Matematik</li>
       <li><b>Salı:</b> İngilizce(4), Matematik(2), Almanca(2)</li>
-      <li><b>Çarşamba:</b> Matematik(2), Beden(2), İngilizce(4)</li>
-      <li><b>Perşembe:</b> Fen(2), Peygamberimizin Hayatı(2), Türkçe(2), İngilizce(2)</li>
-      <li><b>Cuma:</b> İngilizce(2), Din Kültürü(2), Fen(2), Sosyal(2)</li>
     </ul>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
   <div id="duyuru" class="card hidden">
     <h3>📢 Duyurular</h3>
-    <div id="duyuruListesi"><ul><li>Okula bir hafta kırmızı beyaz giyiniyoruz 🇹🇷</li></ul></div>
-    <hr>
+    <div id="duyuruListesi"><ul><li>Sistem Aktif!</li></ul></div>
     <h3>📰 Haberler</h3>
-    <div id="haberListesi"><p>(Yeni haberi Son dakika şeklinde gösteriyoruz)</p></div>
+    <div id="haberListesi"><p>5/J Portalı yayında.</p></div>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
   <div id="liste" class="card hidden">
-    <h3>👨‍🏫 Öğretmenler</h3>
-    <ul>
-      <li>Remzi Emre Duman (Türkçe), Ayşe Türk (Sosyal), Aytaç Atar (Matematik), Birsen Alkan (Fen), Mustafa Çoban (İngilizce)</li>
-    </ul>
-    <h3>👨🏻‍🎓 Öğrenciler</h3>
-    <div style="max-height: 200px; overflow-y: auto; font-size: 14px;">
-      Yiğit, Süleyman, ADA MİRA, ALİ MERT, ARİFE SENA, BARIŞ, BÜŞRA, CEMİLE, DERİN, DURU, ELA, ELİF, EMİR ENES, ESLEM, EYLÜL, FATMANUR, HALİL EMRE, HELİN, İLKER, MURAT YUSUF, MUSTAFA DEMİR, NESLİŞAH, TUANA, ULVİ ERDEM, YAĞMOR.
-    </div>
+    <h3>👨‍🏫 Kadromuz</h3>
+    <p>Remzi Emre Duman, Ayşe Türk, Aytaç Atar...</p>
+    <h3>👨🏻‍🎓 Mevcut</h3>
+    <p>Yiğit, Süleyman ve diğerleri...</p>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
   <div id="panosayfa" class="card hidden">
-    <h3>📝 Gönderiler</h3>
+    <h3>📝 Sınıf Panosu</h3>
     <textarea id="gonderiText" placeholder="Mesajını yaz..."></textarea>
     <button onclick="gonderiPaylas()" style="background:#e67e22;">Onaya Gönder</button>
     <div id="onayliGonderiler" style="margin-top:20px;"></div>
@@ -88,29 +89,30 @@
 
   <div id="giris-ekrani" class="card hidden">
     <h3>🔐 Yönetim Girişi</h3>
-    <input id="gizliKod" type="password" placeholder="Gizli Kod">
-    <button onclick="adminKontrol()" style="background: #2ecc71;">Sisteme Gir</button>
+    <input id="gizliKod" type="password" placeholder="Gizli Kod ( /admin112233 )">
+    <button onclick="adminKontrol()" style="background: #2ecc71;">Giriş Yap</button>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
   <div id="admin-panel" class="card hidden">
-    <h2 style="color:#2ecc71; text-align:center;">🛠 5/J Yönetim Merkezi</h2>
+    <h2 style="color:#2ecc71; text-align:center;">🛠 Yönetim Merkezi</h2>
     <input id="adminSifre" type="password" placeholder="İşlem Şifresi (3131)">
     
     <div class="admin-section">
+      <h4>📓 Ödev Ekle</h4>
+      <input id="yeniOdevDers" type="text" placeholder="Ders Adı...">
+      <textarea id="yeniOdevAciklama" placeholder="Ödev detayı..."></textarea>
+      <button onclick="odevEkle()" style="background:#e67e22;">Ödevi Tanımla</button>
+    </div>
+
+    <div class="admin-section">
       <h4>📢 Duyuru Ekle</h4>
-      <input id="yeniDuyuru" type="text" placeholder="Duyuru metni...">
+      <input id="yeniDuyuru" type="text" placeholder="Duyuru...">
       <button onclick="duyuruEkle()" style="background:#3498db;">Yayınla</button>
     </div>
 
     <div class="admin-section">
-      <h4>📰 Haber Ekle</h4>
-      <input id="yeniHaber" type="text" placeholder="Haber metni...">
-      <button onclick="haberEkle()" style="background:#9b59b6;">Haber Yap</button>
-    </div>
-
-    <div class="admin-section">
-      <h4>✅ Gönderi Onayları</h4>
+      <h4>✅ Mesaj Onayları</h4>
       <div id="onayBekleyenler"></div>
     </div>
 
@@ -119,14 +121,10 @@
 </div>
 
 <script>
-  // --- SAAT SİSTEMİ ---
-  function saatGuncelle() {
-    const n = new Date();
-    document.getElementById("saat").innerText = n.toLocaleTimeString();
-  }
-  setInterval(saatGuncelle, 1000);
+  // Saat
+  setInterval(() => { document.getElementById("saat").innerText = new Date().toLocaleTimeString(); }, 1000);
 
-  // --- SAYFA YÖNETİMİ ---
+  // Navigasyon
   function ac(id) {
     document.querySelectorAll(".card").forEach(c => { if(c.id !== 'timer-card') c.classList.add("hidden"); });
     document.getElementById(id).classList.remove("hidden");
@@ -137,21 +135,49 @@
     document.getElementById("home").classList.remove("hidden");
   }
 
-  // --- ADMİN GİRİŞİ ---
+  // Admin Giriş
   function adminKontrol() {
     if(document.getElementById("gizliKod").value === "/admin112233") {
       ac('admin-panel');
       bekleyenleriYukle();
-    } else { alert("Kod Hatalı!"); }
+    } else { alert("Kod Yanlış!"); }
   }
 
-  // --- VERİ TABANI İŞLEMLERİ (FETCH) ---
+  // --- ADMİN ÖDEV EKLEME ---
+  function odevEkle() {
+    const ders = document.getElementById("yeniOdevDers").value;
+    const detay = document.getElementById("yeniOdevAciklama").value;
+    if(!ders || !detay) return alert("Lütfen boş bırakma!");
+
+    const liste = document.getElementById("odevListesi").querySelector("ul");
+    if(liste.innerText.includes("Henüz ödev")) liste.innerHTML = ""; // Varsayılan yazıyı sil
+
+    const li = document.createElement("li");
+    li.innerHTML = `<b>${ders}:</b> ${detay}`;
+    liste.prepend(li);
+
+    alert("Ödev listeye eklendi!");
+    document.getElementById("yeniOdevDers").value = "";
+    document.getElementById("yeniOdevAciklama").value = "";
+  }
+
+  // Duyuru Ekleme
+  function duyuruEkle() {
+    const d = document.getElementById("yeniDuyuru").value;
+    if(!d) return;
+    const liste = document.getElementById("duyuruListesi").querySelector("ul");
+    const li = document.createElement("li");
+    li.innerHTML = `<b>YENİ:</b> ${d}`;
+    liste.prepend(li);
+    alert("Duyuru yayınlandı!");
+    document.getElementById("yeniDuyuru").value = "";
+  }
+
+  // Gönderi ve Onay İşlemleri
   async function gonderiPaylas() {
     const t = document.getElementById("gonderiText").value;
-    if(!t) return;
     await fetch('/api/ekle', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ metin: t }) });
-    alert("Admin onayına düştü!");
-    document.getElementById("gonderiText").value = "";
+    alert("Onay bekleniyor..."); document.getElementById("gonderiText").value = "";
   }
 
   async function gonderileriYukle() {
@@ -173,28 +199,7 @@
   async function onayla(id) {
     const s = document.getElementById("adminSifre").value;
     const res = await fetch('/api/onayla', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ sifre: s, id: id }) });
-    if(res.ok) { alert("Onaylandı!"); bekleyenleriYukle(); } else { alert("Şifre Yanlış (3131)!"); }
-  }
-
-  // --- YENİ: DUYURU VE HABER SİSTEMİ ---
-  function duyuruEkle() {
-    const d = document.getElementById("yeniDuyuru").value;
-    if(!d) return;
-    const liste = document.getElementById("duyuruListesi").querySelector("ul");
-    const li = document.createElement("li");
-    li.innerHTML = `<b>YENİ:</b> ${d}`;
-    liste.prepend(li);
-    alert("Duyuru eklendi! (Sayfa yenilenince sunucu tarafına kaydetmek için server.js'ye ekleme yapılmalı)");
-    document.getElementById("yeniDuyuru").value = "";
-  }
-
-  function haberEkle() {
-    const h = document.getElementById("yeniHaber").value;
-    if(!h) return;
-    const div = document.getElementById("haberListesi");
-    div.innerHTML = `<p><b>SON DAKİKA:</b> ${h}</p>` + div.innerHTML;
-    alert("Haber eklendi!");
-    document.getElementById("yeniHaber").value = "";
+    if(res.ok) { alert("Onaylandı!"); bekleyenleriYukle(); } else { alert("Şifre Yanlış!"); }
   }
 </script>
 </body>
