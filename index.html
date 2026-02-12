@@ -2,17 +2,18 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>5/J Sınıf Portalı - Full Admin</title>
+<title>5/J Sınıf Portalı - Profesyonel Sürüm</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   html { scroll-behavior: smooth; }
-  body { margin: 0; font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); color: #fff; }
+  body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); color: #fff; }
   header { padding: 18px; text-align: center; font-size: 26px; font-weight: 800; background: linear-gradient(135deg,#00c6ff,#0072ff); box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
   .container { max-width: 700px; margin: auto; padding: 20px; }
   .card { background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); border-radius: 18px; padding: 22px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); animation: fadeUp 0.4s ease; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
   #saat { font-size: 36px; font-weight: bold; text-align: center; text-shadow: 0 0 15px rgba(0,198,255,0.8); }
   #durum { font-size: 24px; text-align: center; margin-top: 6px; color: #00c6ff; }
+  #sayac { text-align: center; color: #7CFF7C; margin-top: 5px; font-size: 18px; }
   button { width: 100%; padding: 14px; margin-top: 10px; border: none; border-radius: 14px; background: linear-gradient(135deg,#00c6ff,#0072ff); color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; }
   button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,198,255,0.4); }
   .back { background: #555; margin-top: 20px; }
@@ -22,6 +23,9 @@
   .gonderi-item { background: rgba(255,255,255,0.08); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid #00c6ff; }
   input, textarea { width: calc(100% - 24px); padding: 12px; border-radius: 10px; border: none; margin-bottom: 10px; background: rgba(0,0,0,0.2); color: white; outline: none; }
   .admin-section { border: 2px solid #2ecc71; padding: 15px; border-radius: 15px; margin-bottom: 20px; background: rgba(46, 204, 113, 0.05); }
+  .scroll-list { max-height: 250px; overflow-y: auto; padding-right: 5px; }
+  .scroll-list::-webkit-scrollbar { width: 5px; }
+  .scroll-list::-webkit-scrollbar-thumb { background: #00c6ff; border-radius: 10px; }
 </style>
 </head>
 <body>
@@ -32,23 +36,24 @@
   <div class="card" id="timer-card">
     <div id="saat">00:00:00</div>
     <div id="durum">Yükleniyor...</div>
+    <div id="sayac"></div>
   </div>
 
   <div id="home" class="card">
     <button onclick="ac('ders')">📚 Ders Programı</button>
     <button onclick="ac('duyuru')">📢 Duyurular & Haberler</button>
     <button onclick="ac('odev')">📓 Ödevler</button>
-    <button onclick="ac('liste')">👥 Öğretmen & Öğrenci</button>
-    <button onclick="ac('sınav')">📑 Sınav Tarihleri</button>
+    <button onclick="ac('ogretmen')">👨‍🏫 Öğretmenlerimiz</button>
+    <button onclick="ac('ogrenciler')">👨🏻‍🎓 Öğrenci Listesi</button>
     <button onclick="ac('panosayfa')">📝 Sınıf Panosu</button>
     <button onclick="ac('giris-ekrani')" style="background: #e74c3c;">🔐 Admin Paneli</button>
   </div>
 
   <div id="odev" class="card hidden">
     <h3>📓 Güncel Ödevler</h3>
-    <div id="odevListesi">
+    <div id="odevListesi" class="scroll-list">
       <ul>
-        <li>Henüz ödev eklenmemiş.</li>
+        <li>Henüz ödev girilmedi.</li>
       </ul>
     </div>
     <button class="back" onclick="geri()">⬅ Geri Dön</button>
@@ -56,26 +61,70 @@
 
   <div id="ders" class="card hidden">
     <h3>📅 Haftalık Program</h3>
-    <ul>
-      <li><b>Pazartesi:</b> Türkçe(2), İngilizce(2), Sosyal, Matematik</li>
-      <li><b>Salı:</b> İngilizce(4), Matematik(2), Almanca(2)</li>
-    </ul>
+    <div class="scroll-list">
+      <h4>Pazartesi</h4><ul><li>Türkçe(2), İngilizce(2), Sosyal(1), Türkçe(2), Matematik(1)</li></ul>
+      <h4>Salı</h4><ul><li>İngilizce(4), Matematik(2), Almanca(2)</li></ul>
+      <h4>Çarşamba</h4><ul><li>Matematik(2), Beden(2), İngilizce(4)</li></ul>
+      <h4>Perşembe</h4><ul><li>Fen(2), Peygamberimizin Hayatı(2), Türkçe(2), İngilizce(2)</li></ul>
+      <h4>Cuma</h4><ul><li>İngilizce(2), Din Kültürü(2), Fen(2), Sosyal(2)</li></ul>
+    </div>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
   <div id="duyuru" class="card hidden">
     <h3>📢 Duyurular</h3>
-    <div id="duyuruListesi"><ul><li>Sistem Aktif!</li></ul></div>
+    <div id="duyuruListesi"><ul><li>Okula bir hafta kırmızı beyaz giyiniyoruz 🇹🇷</li></ul></div>
+    <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin:15px 0;">
     <h3>📰 Haberler</h3>
-    <div id="haberListesi"><p>5/J Portalı yayında.</p></div>
+    <div id="haberListesi"><p>Sınıf portalımız yayına girdi!</p></div>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
-  <div id="liste" class="card hidden">
-    <h3>👨‍🏫 Kadromuz</h3>
-    <p>Remzi Emre Duman, Ayşe Türk, Aytaç Atar...</p>
-    <h3>👨🏻‍🎓 Mevcut</h3>
-    <p>Yiğit, Süleyman ve diğerleri...</p>
+  <div id="ogretmen" class="card hidden">
+    <h3>👨‍🏫 Öğretmenlerimiz</h3>
+    <ul class="scroll-list">
+      <li><b>Remzi Emre Duman:</b> Sınıf ve Türkçe</li>
+      <li><b>Ayşe Türk:</b> Sosyal Bilgiler</li>
+      <li><b>Aytaç Atar:</b> Matematik</li>
+      <li><b>Birsen Alkan:</b> Fen Bilimleri</li>
+      <li><b>Mustafa Çoban:</b> İngilizce</li>
+      <li><b>Serkan Yaylaz:</b> Beden Eğitimi</li>
+      <li><b>Yaşar Çoban:</b> Din Kültürü</li>
+      <li><b>Gülnur Kaya:</b> Almanca</li>
+    </ul>
+    <button class="back" onclick="geri()">⬅ Geri</button>
+  </div>
+
+  <div id="ogrenciler" class="card hidden">
+    <h3>👨🏻‍🎓 5/J Mevcut Listesi</h3>
+    <ul class="scroll-list">
+      <li style="color:#00c6ff;"><b>Yiğit | Kurucu</b></li>
+      <li style="color:#2ecc71;"><b>Süleyman | Admin</b></li>
+      <li>ADA MİRA KARADANA</li>
+      <li>ALİ MERT TEKİN</li>
+      <li>ARİFE SENA ŞAMA</li>
+      <li>BARIŞ BODUREL</li>
+      <li>BÜŞRA AÇIKBAŞ</li>
+      <li>CEMİLE BACAK</li>
+      <li>DERİN SULAR</li>
+      <li>DURU ŞENLİCE</li>
+      <li>ELA BAŞTÜRK</li>
+      <li>ELİF GÜLTEKİN</li>
+      <li>ELİF SARE IŞIK</li>
+      <li>EMİR ENES KARADEMİR</li>
+      <li>ESLEM SERRA ÇELİK</li>
+      <li>EYLÜL AURORA OLKAÇ</li>
+      <li>FATMANUR AKSOY</li>
+      <li>HALİL EMRE ERTEN</li>
+      <li>HELİN KAYHAN</li>
+      <li>İLKER ÇOKAL</li>
+      <li>MURAT YUSUF YAMAN</li>
+      <li>MUSTAFA DEMİR İŞMAR</li>
+      <li>NESLİŞAH KOCA</li>
+      <li>TUANA ÖZDEMİR</li>
+      <li>ULVİ ERDEM KÖLGEKAYA</li>
+      <li>YAĞMOR SEZGİN</li>
+    </ul>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
@@ -90,7 +139,7 @@
   <div id="giris-ekrani" class="card hidden">
     <h3>🔐 Yönetim Girişi</h3>
     <input id="gizliKod" type="password" placeholder="Gizli Kod ( /admin112233 )">
-    <button onclick="adminKontrol()" style="background: #2ecc71;">Giriş Yap</button>
+    <button onclick="adminKontrol()" style="background: #2ecc71;">Sisteme Gir</button>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
@@ -100,31 +149,74 @@
     
     <div class="admin-section">
       <h4>📓 Ödev Ekle</h4>
-      <input id="yeniOdevDers" type="text" placeholder="Ders Adı...">
-      <textarea id="yeniOdevAciklama" placeholder="Ödev detayı..."></textarea>
-      <button onclick="odevEkle()" style="background:#e67e22;">Ödevi Tanımla</button>
+      <input id="yeniOdevDers" type="text" placeholder="Ders...">
+      <input id="yeniOdevAciklama" type="text" placeholder="Ödev detayı...">
+      <button onclick="odevEkle()" style="background:#e67e22;">Ödevi Kaydet</button>
     </div>
 
     <div class="admin-section">
       <h4>📢 Duyuru Ekle</h4>
-      <input id="yeniDuyuru" type="text" placeholder="Duyuru...">
+      <input id="yeniDuyuru" type="text" placeholder="Duyuru metni...">
       <button onclick="duyuruEkle()" style="background:#3498db;">Yayınla</button>
     </div>
 
     <div class="admin-section">
-      <h4>✅ Mesaj Onayları</h4>
+      <h4>✅ Onay Bekleyenler</h4>
       <div id="onayBekleyenler"></div>
     </div>
 
-    <button class="back" onclick="geri()" style="background:#c0392b;">Güvenli Çıkış</button>
+    <button class="back" onclick="geri()" style="background:#c0392b;">Çıkış Yap</button>
   </div>
 </div>
 
 <script>
-  // Saat
-  setInterval(() => { document.getElementById("saat").innerText = new Date().toLocaleTimeString(); }, 1000);
+  // --- SAYAÇ VE SAAT ---
+  const zamanlar = [
+    { bas: 540, bit: 580, ad: "Derste" },
+    { bas: 580, bit: 588, ad: "Teneffüste" },
+    { bas: 590, bit: 630, ad: "Derste" },
+    { bas: 630, bit: 643, ad: "Uzun Teneffüs" },
+    { bas: 645, bit: 685, ad: "Derste" },
+    { bas: 685, bit: 693, ad: "Teneffüste" },
+    { bas: 695, bit: 735, ad: "Derste" },
+    { bas: 735, bit: 743, ad: "Teneffüste" },
+    { bas: 745, bit: 785, ad: "Derste" },
+    { bas: 785, bit: 830, ad: "Uzun Teneffüs" },
+    { bas: 830, bit: 870, ad: "Derste" },
+    { bas: 870, bit: 878, ad: "Teneffüste" },
+    { bas: 880, bit: 920, ad: "Derste" },
+    { bas: 920, bit: 928, ad: "Teneffüste" },
+    { bas: 930, bit: 970, ad: "Derste" }
+  ];
 
-  // Navigasyon
+  function guncelle() {
+    const n = new Date();
+    const h = n.getHours();
+    const m = n.getMinutes();
+    const s = n.getSeconds();
+    const toplamDakika = h * 60 + m;
+    const toplamSaniye = toplamDakika * 60 + s;
+
+    document.getElementById("saat").innerText = `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+
+    let bulundu = false;
+    for (let z of zamanlar) {
+      if (toplamDakika >= z.bas && toplamDakika < z.bit) {
+        document.getElementById("durum").innerText = z.ad;
+        let hedefSaniye = z.bit * 60;
+        let kalan = hedefSaniye - toplamSaniye;
+        document.getElementById("sayac").innerText = `${Math.floor(kalan/60)} dk ${kalan%60} sn kaldı`;
+        bulundu = true; break;
+      }
+    }
+    if(!bulundu) {
+      document.getElementById("durum").innerText = "Okul Kapalı";
+      document.getElementById("sayac").innerText = "";
+    }
+  }
+  setInterval(guncelle, 1000); guncelle();
+
+  // --- NAVİGASYON ---
   function ac(id) {
     document.querySelectorAll(".card").forEach(c => { if(c.id !== 'timer-card') c.classList.add("hidden"); });
     document.getElementById(id).classList.remove("hidden");
@@ -135,7 +227,7 @@
     document.getElementById("home").classList.remove("hidden");
   }
 
-  // Admin Giriş
+  // --- ADMİN İŞLEMLERİ ---
   function adminKontrol() {
     if(document.getElementById("gizliKod").value === "/admin112233") {
       ac('admin-panel');
@@ -143,41 +235,32 @@
     } else { alert("Kod Yanlış!"); }
   }
 
-  // --- ADMİN ÖDEV EKLEME ---
   function odevEkle() {
     const ders = document.getElementById("yeniOdevDers").value;
     const detay = document.getElementById("yeniOdevAciklama").value;
-    if(!ders || !detay) return alert("Lütfen boş bırakma!");
-
+    if(!ders || !detay) return;
     const liste = document.getElementById("odevListesi").querySelector("ul");
-    if(liste.innerText.includes("Henüz ödev")) liste.innerHTML = ""; // Varsayılan yazıyı sil
-
-    const li = document.createElement("li");
-    li.innerHTML = `<b>${ders}:</b> ${detay}`;
-    liste.prepend(li);
-
-    alert("Ödev listeye eklendi!");
+    if(liste.innerText.includes("Henüz")) liste.innerHTML = "";
+    liste.innerHTML = `<li><b>${ders}:</b> ${detay}</li>` + liste.innerHTML;
+    alert("Ödev eklendi!");
     document.getElementById("yeniOdevDers").value = "";
     document.getElementById("yeniOdevAciklama").value = "";
   }
 
-  // Duyuru Ekleme
   function duyuruEkle() {
     const d = document.getElementById("yeniDuyuru").value;
     if(!d) return;
     const liste = document.getElementById("duyuruListesi").querySelector("ul");
-    const li = document.createElement("li");
-    li.innerHTML = `<b>YENİ:</b> ${d}`;
-    liste.prepend(li);
+    liste.innerHTML = `<li><b>YENİ:</b> ${d}</li>` + liste.innerHTML;
     alert("Duyuru yayınlandı!");
     document.getElementById("yeniDuyuru").value = "";
   }
 
-  // Gönderi ve Onay İşlemleri
+  // --- SUNUCU BAĞLANTISI ---
   async function gonderiPaylas() {
     const t = document.getElementById("gonderiText").value;
     await fetch('/api/ekle', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ metin: t }) });
-    alert("Onay bekleniyor..."); document.getElementById("gonderiText").value = "";
+    alert("Mesaj onaya iletildi!"); document.getElementById("gonderiText").value = "";
   }
 
   async function gonderileriYukle() {
