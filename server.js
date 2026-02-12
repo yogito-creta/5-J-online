@@ -3,43 +3,47 @@ const path = require('path');
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname));
 
-// Verilerin tutulduğu yer (Geçici hafıza)
 let gonderiler = [];
 
-// ANA SAYFA (Senin verdiğin HTML kodunun olduğu dosya)
+// Ana Sayfa
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// ADMIN SAYFASI
-app.get('/admin-panel-ozel', (req, res) => {
+// GİZLİ ADMİN PANELİ (Sadece AI yönlendirmesiyle girilecek)
+app.get('/gizli-yonetim-3131', (req, res) => {
     res.send(`
-        <html>
-        <body style="background:#1a1a1a; color:white; font-family:sans-serif; text-align:center;">
-            <h2>5/J Admin Kontrol</h2>
-            <input type="password" id="pass" placeholder="Şifre (3131)">
+        <html lang="tr">
+        <head><title>5/J Admin</title><meta charset="UTF-8"></head>
+        <body style="background:#0f2027; color:white; font-family:sans-serif; text-align:center; padding:50px;">
+            <h1 style="color:#00c6ff;">🔒 5/J Yönetim Paneli</h1>
+            <input type="password" id="pass" placeholder="Admin Şifresi (3131)" style="padding:12px; border-radius:8px; border:none; margin-bottom:20px; width:250px;">
             <div id="list"></div>
+            <br><button onclick="window.location.href='/'" style="background:#555; color:white; border:none; padding:10px; cursor:pointer; border-radius:5px;">Siteden Çık</button>
+
             <script>
                 async function yukle() {
                     const r = await fetch('/api/liste');
                     const d = await r.json();
-                    document.getElementById('list').innerHTML = d.map(g => 
-                        \`<div style="border:1px solid #555; margin:10px; padding:10px;">
-                            \${g.metin} 
-                            <button onclick="onayla(\${g.id})">Onayla</button>
+                    const listDiv = document.getElementById('list');
+                    if(d.length === 0) { listDiv.innerHTML = "<p>Onay bekleyen gönderi yok.</p>"; return; }
+                    listDiv.innerHTML = d.map(g => 
+                        \`<div style="border:1px solid #00c6ff; margin:10px; padding:15px; border-radius:10px; background:rgba(255,255,255,0.05)">
+                            <p>\${g.metin}</p> 
+                            <button onclick="onayla(\${g.id})" style="background:#2ecc71; color:white; border:none; padding:10px 20px; cursor:pointer; border-radius:5px;">ONAYLA ✅</button>
                         </div>\`
                     ).join('');
                 }
                 async function onayla(id) {
                     const p = document.getElementById('pass').value;
-                    await fetch('/api/onayla', {
+                    const res = await fetch('/api/onayla', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ sifre: p, id: id })
                     });
-                    yukle();
+                    if(res.ok) { alert("Onaylandı!"); yukle(); } else { alert("Şifre Hatalı!"); }
                 }
                 yukle();
             </script>
@@ -48,13 +52,15 @@ app.get('/admin-panel-ozel', (req, res) => {
     `);
 });
 
-// API UÇLARI
+// API Uçları
 app.get('/api/liste', (req, res) => res.json(gonderiler.filter(g => !g.onayli)));
 app.get('/api/onayli-liste', (req, res) => res.json(gonderiler.filter(g => g.onayli)));
 
 app.post('/api/ekle', (req, res) => {
-    gonderiler.push({ id: Date.now(), metin: req.body.metin, onayli: false });
-    res.json({ success: true });
+    if(req.body.metin) {
+        gonderiler.push({ id: Date.now(), metin: req.body.metin, onayli: false });
+        res.json({ success: true });
+    }
 });
 
 app.post('/api/onayla', (req, res) => {
@@ -67,5 +73,5 @@ app.post('/api/onayla', (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Sistem aktif!"));
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log("Sunucu Aktif!"));
