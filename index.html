@@ -94,49 +94,42 @@ button:active { transform: scale(0.96); }
 .back { background: #555; }
 .hidden { display: none; }
 
-/* CHAT */
-.chat-area {
-  max-height: 400px;
-  overflow-y: auto;
-  background: rgba(0,0,0,0.35);
-  padding: 15px;
-  border-radius: 14px;
-  margin-bottom: 10px;
+/* LİSTE */
+ul { list-style: none; padding: 0; }
+li {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: 0.2s;
 }
-
-.msg-user {
-  background: rgba(124,255,124,0.18);
-  padding: 10px 14px;
-  border-radius: 14px 14px 0 14px;
-  margin-bottom: 10px;
-  text-align: right;
-}
-
-.msg-ai {
-  background: rgba(0,198,255,0.18);
-  padding: 12px 14px;
-  border-radius: 14px 14px 14px 0;
-  margin-bottom: 15px;
-}
-
-input#aiInput {
-  width: calc(100% - 24px);
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  margin-bottom: 5px;
+li:hover {
+  background: rgba(255,255,255,0.05);
+  padding-left: 6px;
 }
 
 /* GÖNDERİ LİSTESİ */
-#onayliGonderiler {
-  margin-top: 15px;
-}
 .gonderi-item {
   background: rgba(255,255,255,0.08);
   padding: 15px;
   border-radius: 12px;
   margin-bottom: 10px;
   border-left: 4px solid #00c6ff;
+}
+
+/* CHAT AREA (Sadece Admin Girişi İçin) */
+.chat-area {
+  max-height: 200px;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.35);
+  padding: 15px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+}
+input#adminInput {
+  width: calc(100% - 24px);
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  margin-bottom: 5px;
 }
 </style>
 </head>
@@ -161,58 +154,132 @@ input#aiInput {
     <button onclick="ac('ogrencıler')">👨🏻‍🎓 Öğrenciler</button>
     <button onclick="ac('sınav')">📑 Sınav Tarihleri</button>
     <button onclick="ac('gonderiler')">📝 Gönderiler</button>
-    <button onclick="ac('ai')">🤖 Yapay Zeka</button>
+    <button onclick="ac('admin-giris')">🔐 Yönetim Girişi</button>
   </div>
 
   <div id="ders" class="card hidden">
     <h3>📅 Haftalık Program</h3>
     <h4>Pazartesi</h4><ul><li>Türkçe(2), İngilizce(2), Sosyal(1), Türkçe(2), Matematik(1)</li></ul>
     <h4>Salı</h4><ul><li>İngilizce(4), Matematik(2), Almanca(2)</li></ul>
+    <h4>Çarşamba</h4><ul><li>Matematik(2), Beden(2), İngilizce(4)</li></ul>
+    <h4>Perşembe</h4><ul><li>Fen(2), Peygamberimizin Hayatı(2), Türkçe(2), İngilizce(2)</li></ul>
+    <h4>Cuma</h4><ul><li>İngilizce(2), Din Kültürü(2), Fen(2), Sosyal(2)</li></ul>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
   <div id="duyuru" class="card hidden">
     <h3>📢 Duyurular</h3>
-    <ul><li>Okula bir hafta kırmızı beyaz giyiniyoruz 🇹🇷</li></ul>
+    <ul>
+      <li>Okula bir hafta kırmızı beyaz giyiniyoruz 🇹🇷</li>
+    </ul>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
   <div id="odev" class="card hidden">
     <h3>📓 Ödevler</h3>
-    <ul><li>Matematik Fasikül 20. sayfaya kadar.</li></ul>
+    <ul>
+      <li><b>Matematik:</b> Fasikül 20. sayfaya kadar.</li>
+    </ul>
+    <button class="back" onclick="geri()">⬅ Geri</button>
+  </div>
+
+  <div id="ogretmen" class="card hidden">
+    <h3>👨‍🏫 Öğretmenlerimiz</h3>
+    <ul>
+      <li><b>Remzi Emre Duman:</b> Sınıf ve Türkçe</li>
+      <li><b>Ayşe Türk:</b> Sosyal Bilgiler</li>
+      <li><b>Aytaç Atar:</b> Matematik</li>
+      <li><b>Birsen Alkan:</b> Fen Bilimleri</li>
+      <li><b>Mustafa Çoban:</b> İngilizce</li>
+      <li><b>Serkan Yaylaz:</b> Beden Eğitimi</li>
+      <li><b>Yaşar Çoban:</b> Din Kültürü</li>
+      <li><b>Gülnur Kaya:</b> Almanca</li>
+    </ul>
+    <button class="back" onclick="geri()">⬅ Geri</button>
+  </div>
+
+  <div id="ogrencıler" class="card hidden">
+    <h3>👨🏻‍🎓 Öğrenciler</h3>
+    <ul style="max-height: 300px; overflow-y: auto;">
+      <li><b>Yiğit | Kurucu</b></li>
+      <li><b>Süleyman | Admin</b></li>
+      <li>ADA MİRA KARADANA</li>
+      <li>ALİ MERT TEKİN</li>
+      <li>ARİFE SENA ŞAMA</li>
+      <li>BARIŞ BODUREL</li>
+      <li>BÜŞRA AÇIKBAŞ</li>
+      <li>CEMİLE BACAK</li>
+      <li>DERİN SULAR</li>
+      <li>DURU ŞENLİCE</li>
+      <li>ELA BAŞTÜRK</li>
+      <li>ELİF GÜLTEKİN</li>
+      <li>ELİF SARE IŞIK</li>
+      <li>EMİR ENES KARADEMİR</li>
+      <li>ESLEM SERRA ÇELİK</li>
+      <li>EYLÜL AURORA OLKAÇ</li>
+      <li>FATMANUR AKSOY</li>
+      <li>HALİL EMRE ERTEN</li>
+      <li>HELİN KAYHAN</li>
+      <li>İLKER ÇOKAL</li>
+      <li>MURAT YUSUF YAMAN</li>
+      <li>MUSTAFA DEMİR İŞMAR</li>
+      <li>NESLİŞAH KOCA</li>
+      <li>TUANA ÖZDEMİR</li>
+      <li>ULVİ ERDEM KÖLGEKAYA</li>
+      <li>YAĞMOR SEZGİN</li>
+    </ul>
+    <button class="back" onclick="geri()">⬅ Geri</button>
+  </div>
+
+  <div id="sınav" class="card hidden">
+    <h3>📑 Sınav Tarihleri</h3>
+    <ul>
+      <li><b>Sosyal Bilgiler</b> – 01 Nisan 2026</li>
+      <li><b>Yabancı Dil</b> – 02 Nisan 2026</li>
+      <li><b>Fen Bilimleri</b> – 03 Nisan 2026</li>
+    </ul>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
   <div id="gonderiler" class="card hidden">
     <h3>📝 Sınıf Panosu</h3>
-    <textarea id="gonderiText" placeholder="Mesajını yaz ve onaya gönder..." 
-      style="width:100%;height:100px;border-radius:12px;padding:10px;border:none;background:rgba(0,0,0,0.2);color:white;"></textarea>
-    <button onclick="gonderiPaylas()" style="background:#e67e22;">Gönderi Paylaş</button>
-    
-    <div id="onayliGonderiler">
-      </div>
+    <textarea id="gonderiText" placeholder="Mesajını yaz..." style="width:100%;height:80px;border-radius:12px;padding:10px;border:none;background:rgba(0,0,0,0.2);color:white;"></textarea>
+    <button onclick="gonderiPaylas()" style="background:#e67e22;">Onaya Gönder</button>
+    <div id="onayliGonderiListesi" style="margin-top:20px;"></div>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
-  <div id="ai" class="card hidden">
-    <h3>🤖 5/J Akıllı Asistan</h3>
-    <div id="chat" class="chat-area">
-      <div class="msg-ai"><b>AI:</b> Selam! İstediğini sorabilirsin. Admin paneli için gizli kodu buraya yazabilirsin.</div>
+  <div id="admin-giris" class="card hidden">
+    <h3>🔐 Yönetim Erişimi</h3>
+    <p>Admin paneline erişmek için gizli kodu girin:</p>
+    <div id="admin-chat" class="chat-area">
+      <div style="color:#00c6ff;">Sistem Hazır...</div>
     </div>
-    <input id="aiInput" type="text" placeholder="Sorunu yaz..." onkeypress="if(event.key==='Enter') aiGonder()">
-    <button onclick="aiGonder()" style="background: #2ecc71;">Gönder</button>
+    <input id="adminInput" type="text" placeholder="Kod..." onkeypress="if(event.key==='Enter') adminKontrol()">
+    <button onclick="adminKontrol()" style="background: #2ecc71;">Doğrula</button>
     <button class="back" onclick="geri()">⬅ Geri</button>
   </div>
 
 </div>
 
 <script>
-/* SAAT SİSTEMİ */
+/* SAYAÇ VE SAAT */
 const zamanlar = [
   { bas: 540, bit: 580, ad: "Derste" },
-  { bas: 580, bit: 590, ad: "Teneffüste" },
-  { bas: 590, bit: 630, ad: "Derste" }
-  // ... diğer zamanları server.js'deki gibi buraya da ekleyebilirsin
+  { bas: 580, bit: 588, ad: "Teneffüste" },
+  { bas: 590, bit: 630, ad: "Derste" },
+  { bas: 630, bit: 643, ad: "Uzun Teneffüs" },
+  { bas: 645, bit: 685, ad: "Derste" },
+  { bas: 685, bit: 693, ad: "Teneffüste" },
+  { bas: 695, bit: 735, ad: "Derste" },
+  { bas: 735, bit: 743, ad: "Teneffüste" },
+  { bas: 745, bit: 785, ad: "Derste" },
+  { bas: 785, bit: 830, ad: "Uzun Teneffüs" },
+  { bas: 830, bit: 870, ad: "Derste" },
+  { bas: 870, bit: 878, ad: "Teneffüste" },
+  { bas: 880, bit: 920, ad: "Derste" },
+  { bas: 920, bit: 928, ad: "Teneffüste" },
+  { bas: 930, bit: 970, ad: "Derste" }
 ];
 
 function guncelle() {
@@ -220,16 +287,32 @@ function guncelle() {
   const h = n.getHours();
   const m = n.getMinutes();
   const s = n.getSeconds();
-  document.getElementById("saat").innerText = `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-  // Durum ve sayaç mantığı buraya...
-}
-setInterval(guncelle, 1000);
+  const dakika = h * 60 + m;
+  const saniyeToplam = dakika * 60 + s;
 
-/* SAYFA YÖNETİMİ */
+  document.getElementById("saat").innerText = `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+
+  let bulundu = false;
+  for (let z of zamanlar) {
+    if (dakika >= z.bas && dakika < z.bit) {
+      document.getElementById("durum").innerText = z.ad;
+      let hedef = (z.ad === "Derste") ? z.bit * 60 : (zamanlar[zamanlar.indexOf(z)+1]?.bas * 60 || z.bit * 60);
+      const kalan = hedef - saniyeToplam;
+      document.getElementById("sayac").innerText = `${Math.floor(kalan/60)} dk ${kalan%60} sn kaldı`;
+      bulundu = true; break;
+    }
+  }
+  if(!bulundu) {
+    document.getElementById("durum").innerText = "Ders Dışı";
+    document.getElementById("sayac").innerText = "Okul Başlamadı";
+  }
+}
+setInterval(guncelle, 1000); guncelle();
+
+/* NAVİGASYON */
 function ac(id) {
   document.querySelectorAll(".card").forEach(c => { if(c.id !== 'timer-card') c.classList.add("hidden"); });
   document.getElementById(id).classList.remove("hidden");
-  if(id === 'ai') document.getElementById('timer-card').classList.add('hidden');
   if(id === 'gonderiler') gonderileriYukle();
 }
 
@@ -239,68 +322,29 @@ function geri() {
   document.getElementById('timer-card').classList.remove('hidden');
 }
 
-/* GÖNDERİ PAYLAŞMA */
+/* GÖNDERİLER */
 async function gonderiPaylas() {
   const text = document.getElementById("gonderiText").value.trim();
-  if(!text) return alert("Boş bırakma!");
-
-  const res = await fetch('/api/ekle', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ metin: text })
-  });
-
-  if(res.ok) {
-    alert("Gönderi admin onayına gönderildi!");
-    document.getElementById("gonderiText").value = "";
-  }
+  if(!text) return;
+  await fetch('/api/ekle', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ metin: text }) });
+  alert("Onaya iletildi!"); document.getElementById("gonderiText").value = "";
 }
 
 async function gonderileriYukle() {
   const res = await fetch('/api/onayli-liste');
   const veriler = await res.json();
-  const div = document.getElementById("onayliGonderiler");
-  div.innerHTML = veriler.map(g => `<div class="gonderi-item">${g.metin}</div>`).reverse().join('');
+  document.getElementById("onayliGonderiListesi").innerHTML = veriler.map(g => `<div class="gonderi-item">${g.metin}</div>`).reverse().join('');
 }
 
-/* YAPAY ZEKA VE GİZLİ ADMİN GİRİŞİ */
-async function aiGonder() {
-  const input = document.getElementById("aiInput");
-  const chat = document.getElementById("chat");
-  const mesaj = input.value.trim();
-
-  if(!mesaj) return;
-
-  chat.innerHTML += `<div class="msg-user"><b>Sen:</b> ${mesaj}</div>`;
-
-  // GİZLİ KOD KONTROLÜ
-  if (mesaj === "/admin112233") {
-    chat.innerHTML += `<div class="msg-ai"><b>AI:</b> Kod doğrulandı. Admin paneline aktarılıyorsun... 🔑</div>`;
-    input.value = "";
-    setTimeout(() => { window.location.href = "/gizli-admin-yonetim"; }, 1500);
-    return;
+/* GİZLİ ADMİN GİRİŞİ */
+function adminKontrol() {
+  const val = document.getElementById("adminInput").value;
+  if(val === "/admin112233") {
+    document.getElementById("admin-chat").innerHTML = "Doğrulanıyor...";
+    setTimeout(() => { window.location.href = "/gizli-admin-yonetim"; }, 1000);
+  } else {
+    alert("Yanlış Kod!");
   }
-
-  // NORMAL AI CEVABI (Groq API)
-  input.value = "";
-  try {
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": ``
-      },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        messages: [{ role: "user", content: mesaj }]
-      })
-    });
-    const data = await response.json();
-    chat.innerHTML += `<div class="msg-ai"><b>AI:</b> ${data.choices[0].message.content}</div>`;
-  } catch (e) {
-    chat.innerHTML += `<div class="msg-ai"><b>AI:</b> Hata oluştu, API anahtarını kontrol et!</div>`;
-  }
-  chat.scrollTop = chat.scrollHeight;
 }
 </script>
 
