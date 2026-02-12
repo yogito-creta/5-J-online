@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>5/J Sınıf Portalı</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color: #fff;
+}
+
+/* HEADER */
+header {
+  padding: 18px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg,#00c6ff,#0072ff);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+/* GENEL */
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* KART */
+.card {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+  animation: fadeUp 0.4s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SAAT */
+#saat {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 15px rgba(0,198,255,0.8);
+}
+#durum {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 6px;
+  color: #00c6ff;
+}
+#sayac {
+  margin-top: 8px;
+  font-size: 18px;
+  text-align: center;
+  color: #7CFF7C;
+}
+
+/* BUTON */
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg,#00c6ff,#0072ff);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 8px 20px rgba(0,198,255,0.4);
+}
+button:active { transform: scale(0.96); }
+
+.back { background: #555; }
+.hidden { display: none; }
+
+/* CHAT */
+.chat-area {
+  max-height: 400px;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.35);
+  padding: 15px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+}
+
+.msg-user {
+  background: rgba(124,255,124,0.18);
+  padding: 10px 14px;
+  border-radius: 14px 14px 0 14px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.msg-ai {
+  background: rgba(0,198,255,0.18);
+  padding: 12px 14px;
+  border-radius: 14px 14px 14px 0;
+  margin-bottom: 15px;
+}
+
+input#aiInput {
+  width: calc(100% - 24px);
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  margin-bottom: 5px;
+}
+
+/* GÖNDERİ LİSTESİ */
+#onayliGonderiler {
+  margin-top: 15px;
+}
+.gonderi-item {
+  background: rgba(255,255,255,0.08);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border-left: 4px solid #00c6ff;
+}
+</style>
+</head>
+
+<body>
+
+<header>5/J Sınıf Portalı</header>
+
+<div class="container">
+
+  <div class="card" id="timer-card">
+    <div id="saat"></div>
+    <div id="durum"></div>
+    <div id="sayac"></div>
+  </div>
+
+  <div id="home" class="card">
+    <button onclick="ac('ders')">📚 Ders Programı</button>
+    <button onclick="ac('duyuru')">📢 Duyurular</button>
+    <button onclick="ac('odev')">📓 Ödevler</button>
+    <button onclick="ac('ogretmen')">👨‍🏫 Öğretmenler</button>
+    <button onclick="ac('ogrencıler')">👨🏻‍🎓 Öğrenciler</button>
+    <button onclick="ac('sınav')">📑 Sınav Tarihleri</button>
+    <button onclick="ac('gonderiler')">📝 Gönderiler</button>
+    <button onclick="ac('ai')">🤖 Yapay Zeka</button>
+  </div>
+
+  <div id="ders" class="card hidden">
+    <h3>📅 Haftalık Program</h3>
+    <h4>Pazartesi</h4><ul><li>Türkçe(2), İngilizce(2), Sosyal(1), Türkçe(2), Matematik(1)</li></ul>
+    <h4>Salı</h4><ul><li>İngilizce(4), Matematik(2), Almanca(2)</li></ul>
+    <button class="back" onclick="geri()">⬅ Geri</button>
+  </div>
+
+  <div id="duyuru" class="card hidden">
+    <h3>📢 Duyurular</h3>
+    <ul><li>Okula bir hafta kırmızı beyaz giyiniyoruz 🇹🇷</li></ul>
+    <button class="back" onclick="geri()">⬅ Geri</button>
+  </div>
+
+  <div id="odev" class="card hidden">
+    <h3>📓 Ödevler</h3>
+    <ul><li>Matematik Fasikül 20. sayfaya kadar.</li></ul>
+    <button class="back" onclick="geri()">⬅ Geri</button>
+  </div>
+
+  <div id="gonderiler" class="card hidden">
+    <h3>📝 Sınıf Panosu</h3>
+    <textarea id="gonderiText" placeholder="Mesajını yaz ve onaya gönder..." 
+      style="width:100%;height:100px;border-radius:12px;padding:10px;border:none;background:rgba(0,0,0,0.2);color:white;"></textarea>
+    <button onclick="gonderiPaylas()" style="background:#e67e22;">Gönderi Paylaş</button>
+    
+    <div id="onayliGonderiler">
+      </div>
+    <button class="back" onclick="geri()">⬅ Geri</button>
+  </div>
+
+  <div id="ai" class="card hidden">
+    <h3>🤖 5/J Akıllı Asistan</h3>
+    <div id="chat" class="chat-area">
+      <div class="msg-ai"><b>AI:</b> Selam! İstediğini sorabilirsin. Admin paneli için gizli kodu buraya yazabilirsin.</div>
+    </div>
+    <input id="aiInput" type="text" placeholder="Sorunu yaz..." onkeypress="if(event.key==='Enter') aiGonder()">
+    <button onclick="aiGonder()" style="background: #2ecc71;">Gönder</button>
+    <button class="back" onclick="geri()">⬅ Geri</button>
+  </div>
+
+</div>
+
+<script>
+/* SAAT SİSTEMİ */
+const zamanlar = [
+  { bas: 540, bit: 580, ad: "Derste" },
+  { bas: 580, bit: 590, ad: "Teneffüste" },
+  { bas: 590, bit: 630, ad: "Derste" }
+  // ... diğer zamanları server.js'deki gibi buraya da ekleyebilirsin
+];
+
+function guncelle() {
+  const n = new Date();
+  const h = n.getHours();
+  const m = n.getMinutes();
+  const s = n.getSeconds();
+  document.getElementById("saat").innerText = `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  // Durum ve sayaç mantığı buraya...
+}
+setInterval(guncelle, 1000);
+
+/* SAYFA YÖNETİMİ */
+function ac(id) {
+  document.querySelectorAll(".card").forEach(c => { if(c.id !== 'timer-card') c.classList.add("hidden"); });
+  document.getElementById(id).classList.remove("hidden");
+  if(id === 'ai') document.getElementById('timer-card').classList.add('hidden');
+  if(id === 'gonderiler') gonderileriYukle();
+}
+
+function geri() {
+  document.querySelectorAll(".card").forEach(c => c.classList.add("hidden"));
+  document.getElementById("home").classList.remove("hidden");
+  document.getElementById('timer-card').classList.remove('hidden');
+}
+
+/* GÖNDERİ PAYLAŞMA */
+async function gonderiPaylas() {
+  const text = document.getElementById("gonderiText").value.trim();
+  if(!text) return alert("Boş bırakma!");
+
+  const res = await fetch('/api/ekle', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ metin: text })
+  });
+
+  if(res.ok) {
+    alert("Gönderi admin onayına gönderildi!");
+    document.getElementById("gonderiText").value = "";
+  }
+}
+
+async function gonderileriYukle() {
+  const res = await fetch('/api/onayli-liste');
+  const veriler = await res.json();
+  const div = document.getElementById("onayliGonderiler");
+  div.innerHTML = veriler.map(g => `<div class="gonderi-item">${g.metin}</div>`).reverse().join('');
+}
+
+/* YAPAY ZEKA VE GİZLİ ADMİN GİRİŞİ */
+async function aiGonder() {
+  const input = document.getElementById("aiInput");
+  const chat = document.getElementById("chat");
+  const mesaj = input.value.trim();
+
+  if(!mesaj) return;
+
+  chat.innerHTML += `<div class="msg-user"><b>Sen:</b> ${mesaj}</div>`;
+
+  // GİZLİ KOD KONTROLÜ
+  if (mesaj === "/admin112233") {
+    chat.innerHTML += `<div class="msg-ai"><b>AI:</b> Kod doğrulandı. Admin paneline aktarılıyorsun... 🔑</div>`;
+    input.value = "";
+    setTimeout(() => { window.location.href = "/gizli-admin-yonetim"; }, 1500);
+    return;
+  }
+
+  // NORMAL AI CEVABI (Groq API)
+  input.value = "";
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": ``
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [{ role: "user", content: mesaj }]
+      })
+    });
+    const data = await response.json();
+    chat.innerHTML += `<div class="msg-ai"><b>AI:</b> ${data.choices[0].message.content}</div>`;
+  } catch (e) {
+    chat.innerHTML += `<div class="msg-ai"><b>AI:</b> Hata oluştu, API anahtarını kontrol et!</div>`;
+  }
+  chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+</body>
+</html>
